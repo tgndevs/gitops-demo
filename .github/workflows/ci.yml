@@ -27,6 +27,8 @@ jobs:
           push: true
           no-cache: true
           tags: tgndevs/demoapp:latest
+          file: Dockerfile
+          context: app
           build-args: |
             IMAGE_VERSION=1.9
             IMAGE_SOURCE_REVISION=$GITHUB_SHA
