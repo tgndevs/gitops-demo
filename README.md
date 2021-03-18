@@ -46,15 +46,15 @@ flux check
 Create the app namespace.
 
 ```
-kubectl create namespace demoapp
+kubectl create namespace tgndevs
 ```
 
 Create the secret containing the basic authentication for the app sources. In this case we are using the same repository for the Flux system and the app, but they could be different.
 
 ```
-flux create secret git fineract \
-  --namespace=fineract \
-  --url=https://github.com/Azure/fsi-synthetic \
+flux create secret git demoapp \
+  --namespace=tgndevs \
+  --url=https://github.com/tgndevs/gitops-demo \
   --username=$GITHUB_USER \
   --password $GITHUB_TOKEN
 ```
@@ -62,26 +62,26 @@ flux create secret git fineract \
 Create the app source. This will create a `GitRepository` resource manifest.
 
 ```
-flux create source git fineract \
-  --namespace=fineract \
-  --url=https://github.com/Azure/fsi-synthetic \
+flux create source git demoapp \
+  --namespace=tgndevs \
+  --url=https://github.com/tgndevs/gitops-demo \
   --branch=main \
   --interval=30s \
-  --secret-ref=fineract \
-  --export > ./gitops/fintosobicep/fineract-source.yaml
+  --secret-ref=demoapp \
+  --export > ./clusters/GitopsAks/demoapp-source.yaml
 ```
 
 Create a Kustomization to sync your app manifests.
 
 ```
-flux create kustomization fineract \
-  --namespace=fineract \
-  --source=fineract \
-  --path="./fineract/app" \
+flux create kustomization demoapp \
+  --namespace=tgndevs \
+  --source=demoapp \
+  --path="./manifests" \
   --prune=true \
   --validation=client \
   --interval=5m \
-  --export > ./gitops/fintosobicep/fineract-kustomization.yaml
+  --export > ./clusters/GitopsAks/demoapp-kustomization.yaml
 ```
 
 After a few moments you should see how your Kustomization has been applied and it's ready and the app should start to be deployed.

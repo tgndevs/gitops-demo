@@ -1,0 +1,14 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: demoapp
+  namespace: tgndevs
+spec:
+  interval: 30s
+  ref:
+    branch: main
+  secretRef:
+    name: demoapp
+  url: https://github.com/tgndevs/gitops-demo
+
