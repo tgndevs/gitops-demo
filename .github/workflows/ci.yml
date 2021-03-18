@@ -28,7 +28,7 @@ jobs:
           no-cache: true
           tags: tgndevs/demoapp:latest
           build-args: |
-            IMAGE_VERSION="1.9"
+            IMAGE_VERSION=1.9
             IMAGE_SOURCE_REVISION=$GITHUB_SHA
 
       - name: Image digest
