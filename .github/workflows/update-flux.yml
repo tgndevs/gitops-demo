@@ -6,11 +6,11 @@ on:
     - cron: "0 * * * *"
 
 jobs:
-  upgrade:
+  update-flux:
     runs-on: ubuntu-latest
 
     env:
-      CLUSTER_NAME: GitOpsAks
+      CLUSTER_NAME: GitopsAks
 
     steps:
       - name: Check out code
