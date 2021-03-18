@@ -27,10 +27,10 @@ jobs:
           push: true
           no-cache: true
           tags: tgndevs/demoapp:latest
-          build-args:
-            - IMAGE_VERSION="1.9"
-            - IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`"
-            - IMAGE_SOURCE_REVISION="`git rev-parse HEAD`"
+          build-args: |
+            IMAGE_VERSION="1.9"
+            IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`"
+            IMAGE_SOURCE_REVISION="`git rev-parse HEAD`"
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
