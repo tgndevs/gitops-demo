@@ -29,8 +29,7 @@ jobs:
           tags: tgndevs/demoapp:latest
           build-args: |
             IMAGE_VERSION="1.9"
-            IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`"
-            IMAGE_SOURCE_REVISION="`git rev-parse HEAD`"
+            IMAGE_SOURCE_REVISION=$GITHUB_SHA
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
