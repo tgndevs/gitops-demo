@@ -13,12 +13,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
@@ -30,7 +25,12 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          no-cache: true
           tags: tgndevs/demoapp:latest
+          build-args:
+            - IMAGE_VERSION="1.9"
+            - IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`"
+            - IMAGE_SOURCE_REVISION="`git rev-parse HEAD`"
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
