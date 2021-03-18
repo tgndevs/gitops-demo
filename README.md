@@ -1,6 +1,5 @@
 # gitops-demo
 
-
 ## Set up Flux
 
 Configuration steps for Flux CD
@@ -41,7 +40,7 @@ Check that Flux components have been installed correctly.
 flux check
 ```
 
-## Set up application
+## Set up the application
 
 Create the app namespace.
 
@@ -87,7 +86,7 @@ flux create kustomization demoapp \
 After a few moments you should see how your Kustomization has been applied and it's ready and the app should start to be deployed.
 
 ```
-$ kubectl -n fineract  get kustomizations
+$ kubectl -n tgndevs get kustomizations
 NAME       READY   STATUS                                                            AGE
-fineract   True    Applied revision: main/50492cfbb8578662839b5fae54b0166da4b592a6   3h33m
+demoapp    True    Applied revision: main/dc39cc3383e8d2e8cee71658fccdddbd72fb7438   2m
 ```
