@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: demoapp
-        image: tgndevs/demoapp:1.9
+        image: tgndevs/demoapp:1.9 # {"$imagepolicy": "tgndevs:demoapp"}
         ports:
         - containerPort: 8080
         env:

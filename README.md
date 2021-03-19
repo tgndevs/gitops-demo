@@ -102,16 +102,31 @@ flux create image repository demoapp \
   --export > ./clusters/GitopsAks/demoapp-registry.yaml
 ```
 
-Create an ImagePolicy to tell Flux which semver range to use when filtering.
+Create an `ImagePolicy` to tell Flux which semver range to use when filtering.
 
 ```
 flux create image policy demoapp \
   --namespace=tgndevs \
   --image-ref=demoapp \
-  --select-semver=5.0.x \
+  --select-semver=">=1.0.0" \
   --export > ./clusters/GitopsAks/demoapp-policy.yaml
 ```
 
+Create an `ImageUpdateAutomation` to tell Flux which Git repository to write image updates to:
+
+```
+flux create image update demoapp \
+  --namespace=tgndevs \
+  --git-repo-ref=demoapp \
+  --branch=main \
+  --git-repo-path="./manifests" \
+  --checkout-branch=main \
+  --push-branch=main \
+  --author-name=fluxcdbot \
+  --author-email=fluxcdbot@users.noreply.github.com \
+  --commit-template="{{range .Updated.Images}}{{println .}}{{end}}" \
+  --export > ./clusters/GitopsAks/demoapp-imageupdate.yaml
+```
 
 ---
 
