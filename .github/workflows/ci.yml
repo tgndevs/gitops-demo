@@ -25,6 +25,9 @@ jobs:
           tag-sha: true
           tag-semver: |
             {{version}}
+          label-custom: |
+            org.opencontainers.image.title="TgnDevs Demo app" \
+            org.opencontainers.image.description="Provides a demo image to deploy to a Kubernetes cluster. It displays a message, the name of the pod and details of the node it is deployed to." \
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
