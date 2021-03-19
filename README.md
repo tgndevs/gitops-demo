@@ -90,3 +90,10 @@ $ kubectl -n tgndevs get kustomizations
 NAME       READY   STATUS                                                            AGE
 demoapp    True    Applied revision: main/dc39cc3383e8d2e8cee71658fccdddbd72fb7438   2m
 ```
+
+
+---
+
+## Credits
+
+Sample app and Dockerfile taken from [paulbouwer/hello-kubernetes](https://github.com/paulbouwer/hello-kubernetes).
