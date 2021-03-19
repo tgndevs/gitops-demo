@@ -27,6 +27,7 @@ Bootstrap the Flux system components.
 
 ```shell
 flux bootstrap github \
+  --components-extra=image-reflector-controller,image-automation-controller \
   --owner=tgndevs \
   --repository=gitops-demo \
   --branch=main \
@@ -89,6 +90,26 @@ After a few moments you should see how your Kustomization has been applied and i
 $ kubectl -n tgndevs get kustomizations
 NAME       READY   STATUS                                                            AGE
 demoapp    True    Applied revision: main/dc39cc3383e8d2e8cee71658fccdddbd72fb7438   2m
+```
+
+Configure image scanning.
+
+```
+flux create image repository demoapp \
+  --namespace=tgndevs \
+  --image=docker.io/tgndevs/demoapp \
+  --interval=1m \
+  --export > ./clusters/GitopsAks/demoapp-registry.yaml
+```
+
+Create an ImagePolicy to tell Flux which semver range to use when filtering.
+
+```
+flux create image policy demoapp \
+  --namespace=tgndevs \
+  --image-ref=demoapp \
+  --select-semver=5.0.x \
+  --export > ./clusters/GitopsAks/demoapp-policy.yaml
 ```
 
 
