@@ -26,8 +26,8 @@ jobs:
           tag-semver: |
             {{version}}
           label-custom: |
-            org.opencontainers.image.title="TgnDevs Demo app" \
-            org.opencontainers.image.description="Provides a demo image to deploy to a Kubernetes cluster. It displays a message, the name of the pod and details of the node it is deployed to." \
+            org.opencontainers.image.title=TgnDevs Demo app
+            org.opencontainers.image.description=Provides a demo image to deploy to a Kubernetes cluster. It displays a message, the name of the pod and details of the node it is deployed to.
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -51,9 +51,6 @@ jobs:
           file: ./Dockerfile
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-          build-args: |
-            IMAGE_VERSION=${{ steps.docker_meta.outputs.version }}
-            IMAGE_SOURCE_REVISION=${{ github.sha }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
