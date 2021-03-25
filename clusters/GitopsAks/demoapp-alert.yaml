@@ -8,9 +8,11 @@ spec:
   eventSeverity: info
   eventSources:
   - kind: GitRepository
-    name: '*'
+    name: demoapp
+    namespace: tgndevs
   - kind: Kustomization
-    name: '*'
+    name: demoapp
+    namespace: tgndevs
   providerRef:
     name: demoapp-slack
 
