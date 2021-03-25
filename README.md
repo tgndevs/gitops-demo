@@ -118,7 +118,6 @@ Create an `ImageUpdateAutomation` to tell Flux which Git repository to write ima
 flux create image update demoapp \
   --namespace=tgndevs \
   --git-repo-ref=demoapp \
-  --branch=main \
   --git-repo-path="./manifests" \
   --checkout-branch=main \
   --push-branch=main \
