@@ -18,6 +18,6 @@ spec:
         image: docker.io/tgndevs/demoapp:1.9.2 # {"$imagepolicy": "tgndevs:demoapp"}
         ports:
         - containerPort: 8080
-        env:
-        - name: MESSAGE
-          value: Hello World!
+        # env:
+        # - name: MESSAGE
+        #   value: Hello World!
