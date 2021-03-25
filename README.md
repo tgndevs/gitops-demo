@@ -1,10 +1,23 @@
 # gitops-demo
 
+This repository contains the artifacts used in demo part of the [Tarragona Developers Meetup event from 25/03/2021](https://www.meetup.com/Tarragona-Developers-Meetup/events/276963798/).
+
+The repository is structured as follows.
+
+- `.github/workflows` contains the `ci.yml` GitHub Action to build and push the Docker image for the demo application and the `update-flux.yml` Action that runs periodically and checks for new Flux releases and updates the Flux manifests in `clusters/GitopsAks/flux-system`.
+- `app` contains the demo app (borrowed from [paulbouwer/hello-kubernetes](https://github.com/paulbouwer/hello-kubernetes)).
+- `clusters/GitopsAks` contains the Flux system components and Flux configuration for the demo app (e.g. git source and Docker registry connectivity, alerts, image update policy, etc.).
+- `manifests` contains the manifests needed to run the demo app.
+
+## Create a Kubernetes cluster
+
+For the demo we used a cluster in [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/), but you can use any other Kubernetes service provider or spin up a local cluster with [kind](https://kind.sigs.k8s.io).
+
+After you have set up your cluster and connected to it follow the steps below to bootstrap the cluster with Flux and run a demo application.
+
 ## Set up Flux
 
-Configuration steps for Flux CD
-
-Install Flux CD.
+Install Flux CD locally.
 
 ```shell
 curl -s https://toolkit.fluxcd.io/install.sh | sudo bash
@@ -16,11 +29,12 @@ Validate Flux pre-requisites.
 flux check --pre
 ```
 
-Export your GitHub username and Personal Access Token with full access to the repo scope.
+Export your GitHub username and Personal Access Token with full access to the repo scope and the cluster name.
 
 ```shell
 export GITHUB_TOKEN=<your-token>
 export GITHUB_USER=<your-username>
+export CLUSTER_NAME=GitopsAks
 ```
 
 Bootstrap the Flux system components.
@@ -31,8 +45,7 @@ flux bootstrap github \
   --owner=tgndevs \
   --repository=gitops-demo \
   --branch=main \
-  --private=true \
-  --path=./clusters/GitopsAks
+  --path=./clusters/$CLUSTER_NAME
 ```
 
 Check that Flux components have been installed correctly.
@@ -68,7 +81,7 @@ flux create source git demoapp \
   --branch=main \
   --interval=30s \
   --secret-ref=demoapp \
-  --export > ./clusters/GitopsAks/demoapp-source.yaml
+  --export > ./clusters/$CLUSTER_NAME/demoapp-source.yaml
 ```
 
 Create a Kustomization to sync your app manifests.
@@ -81,7 +94,7 @@ flux create kustomization demoapp \
   --prune=true \
   --validation=client \
   --interval=5m \
-  --export > ./clusters/GitopsAks/demoapp-kustomization.yaml
+  --export > ./clusters/$CLUSTER_NAME/demoapp-kustomization.yaml
 ```
 
 After a few moments you should see how your Kustomization has been applied and it's ready and the app should start to be deployed.
@@ -99,7 +112,7 @@ flux create image repository demoapp \
   --namespace=tgndevs \
   --image=docker.io/tgndevs/demoapp \
   --interval=1m \
-  --export > ./clusters/GitopsAks/demoapp-registry.yaml
+  --export > ./clusters/$CLUSTER_NAME/demoapp-registry.yaml
 ```
 
 Create an `ImagePolicy` to tell Flux which semver range to use when filtering.
@@ -109,7 +122,7 @@ flux create image policy demoapp \
   --namespace=tgndevs \
   --image-ref=demoapp \
   --select-semver=">=1.0.0" \
-  --export > ./clusters/GitopsAks/demoapp-policy.yaml
+  --export > ./clusters/$CLUSTER_NAME/demoapp-policy.yaml
 ```
 
 Create an `ImageUpdateAutomation` to tell Flux which Git repository to write image updates to:
@@ -124,7 +137,7 @@ flux create image update demoapp \
   --author-name=fluxcdbot \
   --author-email=fluxcdbot@users.noreply.github.com \
   --commit-template="{{range .Updated.Images}}{{println .}}{{end}}" \
-  --export > ./clusters/GitopsAks/demoapp-imageupdate.yaml
+  --export > ./clusters/$CLUSTER_NAME/demoapp-imageupdate.yaml
 ```
 
 ### Configure notifications
@@ -144,22 +157,16 @@ flux create alert-provider demoapp-slack \
   --type slack \
   --channel gitops-demo \
   --secret-ref slack-url \
-  --export > ./clusters/GitopsAks/demoapp-alert-provider.yaml
+  --export > ./clusters/$CLUSTER_NAME/demoapp-alert-provider.yaml
 ```
 
+Create an alert for the demo app. We will get notification every time there's a change or error in any of the app components.
 
 ```
 flux create alert demoapp \
   --provider-ref demoapp-slack \
   --event-severity info \
-  --event-source GitRepository/ \
-  --event-source Kustomization/ \
-  --export > ./clusters/GitopsAks/demoapp-alert.yaml
-
-
+  --event-source GitRepository/demoapp \
+  --event-source Kustomization/demoapp \
+  --export > ./clusters/$CLUSTER_NAME/demoapp-alert.yaml
 ```
----
-
-## Credits
-
-Sample app and Dockerfile taken from [paulbouwer/hello-kubernetes](https://github.com/paulbouwer/hello-kubernetes).
