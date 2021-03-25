@@ -4,7 +4,7 @@ metadata:
   name: tgndevs-demoapp
   namespace: tgndevs
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: tgndevs-demoapp
