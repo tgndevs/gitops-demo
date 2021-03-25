@@ -145,7 +145,7 @@ flux create image update demoapp \
 
 ### Configure notifications
 
-First create a secret with your Slack incoming webhook:
+First create a secret with your [Slack incoming webhook](https://api.slack.com/messaging/webhooks).
 
 ```
 kubectl create secret generic slack-url \
@@ -173,3 +173,7 @@ flux create alert demoapp \
   --event-source Kustomization/demoapp \
   --export > ./clusters/$CLUSTER_NAME/demoapp-alert.yaml
 ```
+
+Example messages posted by Flux to the Slack channel:
+
+![image](https://user-images.githubusercontent.com/3786750/112460035-c6ff6280-8d5e-11eb-8537-d37ac8ef945d.png)
