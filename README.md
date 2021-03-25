@@ -127,6 +127,37 @@ flux create image update demoapp \
   --export > ./clusters/GitopsAks/demoapp-imageupdate.yaml
 ```
 
+### Configure notifications
+
+First create a secret with your Slack incoming webhook:
+
+```
+kubectl create secret generic slack-url \
+  --namespace flux-system \
+  --from-literal=address=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+```
+
+Create a notification provider for Slack by referencing the above secret.
+
+```
+flux create alert-provider demoapp-slack \
+  --type slack \
+  --channel gitops-demo \
+  --secret-ref slack-url \
+  --export > ./clusters/GitopsAks/demoapp-alert-provider.yaml
+```
+
+
+```
+flux create alert demoapp \
+  --provider-ref demoapp-slack \
+  --event-severity info \
+  --event-source GitRepository/ \
+  --event-source Kustomization/ \
+  --export > ./clusters/GitopsAks/demoapp-alert.yaml
+
+
+```
 ---
 
 ## Credits
