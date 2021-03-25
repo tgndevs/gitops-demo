@@ -4,7 +4,7 @@ metadata:
   name: tgndevs-demoapp
   namespace: tgndevs
 spec:
-  type: ClusterIP
+  type: Blabla
   ports:
   - port: 80
     targetPort: 8080
