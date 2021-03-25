@@ -20,4 +20,4 @@ spec:
         - containerPort: 8080
         env:
         - name: MESSAGE
-          value: Hello from TgnDevs!
+          value: Hello World!
