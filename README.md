@@ -1,5 +1,8 @@
 # gitops-demo
 
+[![Demo App CI](https://github.com/tgndevs/gitops-demo/actions/workflows/demoapp-ci.yml/badge.svg)](https://github.com/tgndevs/gitops-demo/actions/workflows/demoapp-ci.yml)
+[![Update Flux](https://github.com/tgndevs/gitops-demo/actions/workflows/update-flux.yml/badge.svg)](https://github.com/tgndevs/gitops-demo/actions/workflows/update-flux.yml)
+
 This repository contains the artifacts used in demo part of the [Tarragona Developers Meetup event from 25/03/2021](https://www.meetup.com/Tarragona-Developers-Meetup/events/276963798/).
 
 The repository is structured as follows.
